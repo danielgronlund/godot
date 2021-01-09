@@ -1939,6 +1939,11 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 				nav_mode = NAVIGATION_PAN;
 		}
 
+		const bool scroll_to_pan = EditorSettings::get_singleton()->get("editors/3d/navigation/scroll_to_pan");
+		if ((!pan_gesture->get_alt() && !pan_gesture->get_shift() && scroll_to_pan)) {
+			nav_mode = NAVIGATION_PAN;
+		}
+
 		switch (nav_mode) {
 			case NAVIGATION_PAN: {
 				_nav_pan(pan_gesture, pan_gesture->get_delta());
@@ -2055,11 +2060,12 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 void SpatialEditorViewport::_nav_pan(Ref<InputEventWithModifiers> p_event, const Vector2 &p_relative) {
 
 	const NavigationScheme nav_scheme = (NavigationScheme)EditorSettings::get_singleton()->get("editors/3d/navigation/navigation_scheme").operator int();
+	const int scroll_speed_multiplier = int(EditorSettings::get_singleton()->get("editors/3d/navigation/pan_speed"));
+	const bool scroll_to_pan = EditorSettings::get_singleton()->get("editors/3d/navigation/scroll_to_pan");
 
-	real_t pan_speed = 1 / 150.0;
-	int pan_speed_modifier = 10;
-	if (nav_scheme == NAVIGATION_MAYA && p_event->get_shift())
-		pan_speed *= pan_speed_modifier;
+	real_t pan_speed = 1 / 15.0;
+	if ((nav_scheme == NAVIGATION_MAYA && p_event->get_alt()) || scroll_to_pan)
+		pan_speed *= scroll_speed_multiplier;
 
 	Transform camera_transform;
 
