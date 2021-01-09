@@ -553,6 +553,8 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("editors/3d/navigation/zoom_modifier", 4);
 	hints["editors/3d/navigation/zoom_modifier"] = PropertyInfo(Variant::INT, "editors/3d/navigation/zoom_modifier", PROPERTY_HINT_ENUM, "None,Shift,Alt,Meta,Ctrl");
 	_initial_set("editors/3d/navigation/warped_mouse_panning", true);
+	_initial_set("editors/3d/navigation/scroll_to_pan", false);
+	_initial_set("editors/3d/navigation/pan_speed", 20);
 
 	// 3D: Navigation feel
 	_initial_set("editors/3d/navigation_feel/orbit_sensitivity", 0.4);
